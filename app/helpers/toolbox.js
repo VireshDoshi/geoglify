@@ -1,7 +1,6 @@
 // Import MapboxDraw for drawing functionalities and MeasuresControl for measuring functionalities
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import MeasuresControl from "~/helpers/measures";
-import html2canvas from "html2canvas";
 
 // Import configurations from a local module
 import configs from "~/helpers/configs";
@@ -53,7 +52,6 @@ export default class Toolbox {
     // Initialize buttons for switching between modes
     this.initMeasuresBtn();
     this.initDrawBtn();
-    this.initExportBtn();
   }
 
   // Initialize the button for switching to the measures mode
@@ -88,21 +86,6 @@ export default class Toolbox {
     this._container.appendChild(btn);
   }
 
-  initExportBtn() {
-    let btn = document.createElement("button");
-    btn.type = "button";
-    btn.title = "Export";
-    btn.className = "export_control";
-
-    // Toggle between modes when the button is clicked
-    btn.addEventListener("click", () => {
-      let blob = this._map.getCanvas().toDataURL('image/png');
-      this.saveAs(blob, 'geoglify.png');
-    });
-
-    this._container.appendChild(btn);
-  }
-
   // Method called when removing the Toolbox from the map
   onRemove() {
     this._container.parentNode.removeChild(this._container);
@@ -120,7 +103,6 @@ export default class Toolbox {
         this._map.addControl(this.draw, "top-right");
         document.querySelector(".measures_control").style.display = "none";
         break;
-
       case "measures":
         if (this._map.hasControl(this.draw)) {
           this._map.removeControl(this.draw);
@@ -141,28 +123,7 @@ export default class Toolbox {
 
         document.querySelector(".draw_control").style.display = "block";
         document.querySelector(".measures_control").style.display = "block";
-
         break;
-    }
-  }
-
-  saveAs(uri, filename) {
-    var link = document.createElement("a");
-
-    if (typeof link.download === "string") {
-      link.href = uri;
-      link.download = filename;
-
-      //Firefox requires the link to be in the body
-      document.body.appendChild(link);
-
-      //simulate click
-      link.click();
-
-      //remove the link when done
-      document.body.removeChild(link);
-    } else {
-      window.open(uri);
     }
   }
 }

@@ -55,6 +55,8 @@ async function getAISShips() {
           dimD: 1,
           length: 1,
           width: 1,
+          destination: 1,
+          is_trawler: 1,
         },
       }
     )
@@ -73,7 +75,7 @@ async function searchAISShips(page, itemsPerPage, searchText) {
   };
 
   if (searchText) {
-    filter.$or = [{ mmsi: { $regex: searchText, $options: "i" } }, { shipname: { $regex: searchText, $options: "i" } }, { imo: { $regex: searchText, $options: "i" } }];
+    filter.$or = [{ mmsi: { $regex: searchText, $options: "i" } }, { shipname: { $regex: searchText, $options: "i" } }, { imo: { $regex: searchText, $options: "i" } }, { cargo: { $regex: searchText, $options: "i" } }];
   }
 
   let ships = await mongoClient
@@ -96,6 +98,8 @@ async function searchAISShips(page, itemsPerPage, searchText) {
         dimD: 1,
         length: 1,
         width: 1,
+        destination: 1,
+        is_trawler: 1,
       },
     })
     .skip((page - 1) * itemsPerPage)
@@ -136,6 +140,8 @@ async function getAISShip(shipId) {
           shipname: 1,
           lat: 1,
           lon: 1,
+          destination: 1,
+          is_trawler: 1,
         },
       }
     );

@@ -1,5 +1,6 @@
 // Import necessary modules and libraries
 import configs from "@/helpers/configs";
+import * as turf from "@turf/turf";
 
 export const state = () => ({
   list: [],
@@ -121,7 +122,7 @@ function processShipData(ship) {
 
   // Determine the color and priority of the ship based on the cargo type
   const cargoType = configs.getCargoType(cargo);
-  ship.color = configs.hexToRgb(cargoType.color);
+  ship.color = configs.hexToRgb(cargoType.color, 0.7);
   ship.priority = -(isHeadingValid ? cargoType.priority * -100 : -100);
 
   // Get the country code from the MMSI

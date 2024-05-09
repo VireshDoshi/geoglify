@@ -45,9 +45,10 @@
     <!-- Footer -->
     <v-footer class="d-flex w-100 align-center text-caption px-3" color="blue-grey-darken-3" density="compact" app dark>
       <v-row justify="center" no-gutters>
-        <AuthenticationStatus />
+        <p class="text-body-1 pt-1">by <a href="https://leoneljdias.github.io/" target="_blank" style="color: white">leoneljdias</a></p>
         <v-spacer></v-spacer>
         <iframe src="https://ghbtns.com/github-btn.html?user=geoglify&repo=geoglify&type=star&count=true&size=large" frameborder="0" scrolling="0" width="130" height="32" title="GitHub"></iframe>
+        <iframe src="https://github.com/sponsors/geoglify/button" title="Sponsor geoglify" height="32" width="114" style="border: 0; border-radius: 6px"></iframe>
       </v-row>
     </v-footer>
   </v-app>
@@ -55,6 +56,7 @@
 
 <script>
   export default {
+    setup() {},
 
     data() {
       return {
@@ -84,7 +86,7 @@
       },
       async fetchWeatherData() {
         try {
-          const API_KEY = this.$config.public.OPENWEATHERMAP_API_KEY || "790a9878f3ac207114becfad4a7870aa";
+          const API_KEY = this.$config.public.OPENWEATHERMAP_API_KEY || '790a9878f3ac207114becfad4a7870aa';
           const position = await this.getCurrentPosition();
           const { latitude: lat, longitude: lon } = position.coords;
           const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}&units=metric`);
@@ -107,12 +109,5 @@
   }
   .v-toolbar__content > .v-toolbar-title {
     margin-inline-start: 0px !important;
-  }
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: black;
   }
 </style>

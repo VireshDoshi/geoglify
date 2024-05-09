@@ -1,9 +1,0 @@
-{
-  "name": "ais-decoder",
-  "version": "1.0.0",
-  "description": "AIS Decoder for Geoglify",
-  "dependencies": {
-    "ggencoder": "1.0.8",
-    "mongodb": "^6.5.0"
-  }
-}

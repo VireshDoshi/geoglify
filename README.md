@@ -30,3 +30,10 @@ To set up the development environment, follow the instructions in the [`INSTALL.
 This project is licensed under the [MIT License](LICENSE) - see the file for details.
 
 Take a look at our code and explore the vast world of Geoglify! We look forward to community contributions and making this project a go-to resource for maritime data analysis and planning in the industry.
+
+
+
+mongodb express
+docker run --link webmongo:mongodb -p 8083:8081 -e ME_CONFIG_MONGODB_URL="mongodb://mongodb:27778" mongo-express
+
+docker run --network geoglify_default --link mongodb:mongodb -p 8083:8081 -e ME_CONFIG_MONGODB_URL="mongodb://mongodb:27778" mongo-express

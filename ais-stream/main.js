@@ -2,10 +2,13 @@ const { log } = require("console");
 const { MongoClient } = require("mongodb");
 const net = require("net");
 const WebSocket = require("ws");
+const AisDecode = require("ggencoder").AisDecode;
+const session = {};
+
 
 // Configurations
 const MONGODB_CONNECTION_STRING = process.env.MONGODB_CONNECTION_STRING || "mongodb://root:root@localhost:27778/?directConnection=true&authMechanism=DEFAULT";
-const AISSTREAM_API_KEY = process.env.AISSTREAM_API_KEY || "7fb1e16f93a4d520d83a95e325c55e69b3b4fc0b";
+const AISSTREAM_API_KEY = process.env.AISSTREAM_API_KEY || "f36779b711561eabb581a50bc7db94722b60bbbf";
 const AIS_SERVER_HOST = process.env.AIS_SERVER_HOST || "aisstream.io"
 
 // MongoDB client
@@ -14,8 +17,11 @@ const mongoClient = new MongoClient(MONGODB_CONNECTION_STRING);
 // Variables to store AIS messages and ships list
 let aisMessageBuffer = [];
 let aisMessageDB = new Map();
+// aim to store all coords per mmsi
+let aisCoordsDB = new Map();
 let isIndexCreated = false;
 let isProcessing = false;
+
 
 // Logging function for information messages
 function logInfo(message) {
@@ -57,6 +63,7 @@ async function connectToMongoDBWithRetry() {
 async function startProcessing() {
   const database = mongoClient.db("geoglify");
   const realtimeMessagesCollection = database.collection("realtime");
+  const streamMessagesCollection = database.collection("stream");  
 
   // Function to process and save messages in the database
   async function processAndSaveMessages() {
@@ -134,10 +141,16 @@ async function connectToAisStreamWithRetry() {
       let subscriptionMessage = {
         Apikey: AISSTREAM_API_KEY,
         BoundingBoxes: [
+          // IFA 
           [
-            [27.955591, -40.012207],
-            [44.574817, 1.801758],
+            [51.177847, 0.972709],
+            [50.858204,1.857687 ]
           ],
+          // NEMO
+          [
+            [51.447100,1.176615],
+            [51.161960,3.220736]
+          ]
         ],
       };
       socket.send(JSON.stringify(subscriptionMessage));
@@ -150,7 +163,7 @@ async function connectToAisStreamWithRetry() {
 
     socket.onmessage = async (event) => {
       let aisMessage = JSON.parse(event.data);
-      logInfo("Received data from AIS stream!", aisMessage);
+      // logInfo("Received data from AIS stream! " + aisMessage.MetaData.MMSI + JSON.stringify(aisMessage) , aisMessage);
       processAisMessage(aisMessage);
     };
 
@@ -165,8 +178,15 @@ async function connectToAisStreamWithRetry() {
 // Function to process AIS and NMEA messages
 function processAisMessage(message) {
   message = decodeStreamMessage(message);
-
   aisMessageDB.set(message.mmsi, message);
+  // save just the coordinates to a map
+  if(aisCoordsDB.has(message.mmsi)){
+    aisCoordsDB.get(message.mmsi).push(message.lon, message.lat)  
+  }else{
+    aisCoordsDB.set(message.mmsi, [message.lon, message.lat])
+  }
+  locations = aisCoordsDB.get(message.mmsi);
+  logInfo(locations);
 
   if (!aisMessageBuffer.includes(message.mmsi))
     aisMessageBuffer.push(message.mmsi);
@@ -183,6 +203,8 @@ function decodeStreamMessage(message) {
     mmsi: message.MetaData.MMSI.toString(),
     shipname: message.MetaData.ShipName.trim(),
     utc: new Date(message.MetaData.time_utc),
+    lon: message.MetaData.longitude,
+    lat: message.MetaData.latitude,
     location: {
       type: "Point",
       coordinates: [message.MetaData.longitude, message.MetaData.latitude],
@@ -216,6 +238,9 @@ function decodeStreamMessage(message) {
     : null;
 
   ship.eta = eta;
+  ship.is_trawler = ship.cargo == 30 ? 1 : 0
+  // logSuccess("mmsi: \x1b[32m" + ship.immsi + "-----[" + message.MetaData.longitude + "," +  message.MetaData.latitude + "]\n\x1b[0m");
+
 
   return ship;
 }

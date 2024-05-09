@@ -35,7 +35,7 @@
     "color": "#FFFF00",
     "priority": 6
   },
-  { "code": 30, "name": "Fishing", "color": "#008000", "priority": 3 },
+  { "code": 30, "name": "Fishing", "color": "#FF0000", "priority": 1 },
   { "code": 31, "name": "Towing", "color": "#800080", "priority": 4 },
   {
     "code": 32,

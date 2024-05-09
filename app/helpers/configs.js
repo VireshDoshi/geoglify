@@ -439,39 +439,4 @@ export default {
       },
     };
   },
-
-  // Process the ship data and return the processed ship object
-  processShipData(ship) {
-    // Extract the necessary data from the ship object
-    const { hdg, cargo, mmsi } = ship;
-
-    // Check if the heading is valid
-    const isHeadingValid = !!(hdg && hdg !== 511);
-
-    // Create a new ship object with the necessary properties
-    if (isHeadingValid) {
-      ship.icon = "models/boat.svg";
-      ship.size = 16;
-      ship.width = 41;
-      ship.height = 96;
-    } else {
-      ship.icon = "models/circle.png";
-      ship.size = 10;
-      ship.width = 20;
-      ship.height = 20;
-    }
-
-    // Determine the color and priority of the ship based on the cargo type
-    const cargoType = configs.getCargoType(cargo);
-    ship.color = configs.hexToRgb(cargoType.color, 0.7);
-    ship.priority = -(isHeadingValid ? cargoType.priority * -100 : -100);
-
-    // Get the country code from the MMSI
-    if (!!mmsi) ship.countrycode = configs.getCountryCode(mmsi);
-
-    // Process the GeoJSON data
-    ship.geojson = configs.processGeoJSON(ship);
-
-    return ship;
-  },
 };
