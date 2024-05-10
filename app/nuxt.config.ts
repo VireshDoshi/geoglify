@@ -21,7 +21,7 @@ export default defineNuxtConfig({
   css: ["maplibre-gl/dist/maplibre-gl.css", "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css", , "maplibre-gl-basemaps/lib/basemaps.css"],
   runtimeConfig: {
     public: {
-      API_URL: process.env.API_URL || "http://localhost:8081",
+      API_URL: process.env.API_URL || "http://host.docker.internal:8081",
       REALTIME_URL: process.env.REALTIME_URL || "http://localhost:8080",
       MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
       OPENWEATHERMAP_API_KEY: process.env.OPENWEATHERMAP_API_KEY,

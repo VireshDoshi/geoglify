@@ -1,16 +1,16 @@
-version: '3.1'
-
 services:
-  # app:
-  #   container_name: app
-  #   restart: always
-  #   build: ./app
-  #   working_dir: /opt/app
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - realtime
-  #     - api
+  app:
+    container_name: app
+    restart: always
+    build: ./app
+    working_dir: /opt/app
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    depends_on:
+      - realtime
+      - api
   mongodb:
     container_name: mongodb
     restart: always
@@ -23,89 +23,44 @@ services:
       - mongodb_data:/data/db
     ports:
       - 27778:27778
-  # mongo-express:
-  #   image: mongo-express
-  #   container_name: mexpress
-  #   environment:
-  #     - ME_CONFIG_MONGODB_ADMINUSERNAME=root
-  #     - ME_CONFIG_MONGODB_ADMINPASSWORD=root
-  #     - ME_CONFIG_MONGODB_URL=mongodb://mongodb:27778/?directConnection=true&authMechanism=DEFAULT
-  #     - ME_CONFIG_BASICAUTH_USERNAME=mexpress
-  #     - ME_CONFIG_BASICAUTH_PASSWORD=mexpress
-  #   links:
-  #     - mongodb
-  #   restart: unless-stopped
-  #   ports:
-  #     - "8083:8081"
-  #   depends_on:
-  #     - mongodb
-  # ais-stream:
-  #   build: ./ais-stream
-  #   restart: always
-  #   container_name: ais-stream
-  #   working_dir: /opt/ais-stream
-  #   environment:
-  #     - NODE_ENV=production
-  #     - MONGODB_CONNECTION_STRING=mongodb://root:root@mongodb:27778/?directConnection=true&authMechanism=DEFAULT
-  #     - AISSTREAM_API_KEY=f36779b711561eabb581a50bc7db94722b60bbbf
-  #     - AIS_SERVER_HOST=aisstream.io
-  #   command: "node main.js"
-  #   depends_on:
-  #     - mongodb
-
-  # ais-decoder:
-  #   build: ./ais-decoder
-  #   restart: always
-  #   container_name: ais-decoder
-  #   working_dir: /opt/ais-decoder
-  #   environment:
-  #     - NODE_ENV=production
-  #     - MONGODB_CONNECTION_STRING=mongodb://root:root@mongodb:27778/?directConnection=true&authMechanism=DEFAULT
-  #     - AIS_SERVER_HOST=153.44.253.27
-  #     - AIS_SERVER_PORT=5631
-  #   command: "node main.js"
-  #   depends_on:
-  #     - mongodb
-
-  # realtime:
-  #   build: ./realtime
-  #   restart: always
-  #   container_name: realtime
-  #   working_dir: /opt/realtime
-  #   environment:
-  #     - NODE_ENV=production
-  #     - MONGODB_CONNECTION_STRING=mongodb://root:root@mongodb:27778/?directConnection=true&authMechanism=DEFAULT
-  #   ports:
-  #     - "8080:8080"
-  #   command: "node main.js"
-  #   depends_on:
-  #     - mongodb
-
-  # api:
-  #   build: ./api
-  #   restart: always
-  #   container_name: api
-  #   working_dir: /opt/api
-  #   ports:
-  #     - "8081:8081"
-  #   environment:
-  #     - NODE_ENV=production
-  #     - MONGODB_CONNECTION_STRING=mongodb://root:root@mongodb:27778/?directConnection=true&authMechanism=DEFAULT
-  #   command: "node main.js"
-  #   depends_on:
-  #     - mongodb
-
-  # ollama:
-  #   volumes:
-  #     - ollama:/root/.ollama
-  #   ports:
-  #     - 11434:11434
-  #   container_name: ollama
-  #   pull_policy: always
-  #   tty: true
-  #   restart: unless-stopped
-  #   image: ollama/ollama:latest
-
+  ais-stream:
+    build: ./ais-stream
+    restart: always
+    container_name: ais-stream
+    working_dir: /opt/ais-stream
+    environment:
+      - NODE_ENV=production
+      - MONGODB_CONNECTION_STRING=mongodb://root:root@mongodb:27778/?directConnection=true&authMechanism=DEFAULT
+      - AISSTREAM_API_KEY=f36779b711561eabb581a50bc7db94722b60bbbf
+      - AIS_SERVER_HOST=aisstream.io
+    command: "node main.js"
+    depends_on:
+      - mongodb
+  realtime:
+    build: ./realtime
+    restart: always
+    container_name: realtime
+    working_dir: /opt/realtime
+    environment:
+      - NODE_ENV=production
+      - MONGODB_CONNECTION_STRING=mongodb://root:root@mongodb:27778/?directConnection=true&authMechanism=DEFAULT
+    ports:
+      - "8080:8080"
+    command: "node main.js"
+    depends_on:
+      - mongodb
+  api:
+    build: ./api
+    restart: always
+    container_name: api
+    working_dir: /opt/api
+    ports:
+      - "8081:8081"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_CONNECTION_STRING=mongodb://root:root@mongodb:27778/?directConnection=true&authMechanism=DEFAULT
+    command: "node main.js"
+    depends_on:
+      - mongodb
 volumes:
   mongodb_data:
-  ollama:

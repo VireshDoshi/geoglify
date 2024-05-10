@@ -186,7 +186,7 @@ function processAisMessage(message) {
     aisCoordsDB.set(message.mmsi, [message.lon, message.lat])
   }
   locations = aisCoordsDB.get(message.mmsi);
-  logInfo(locations);
+  logInfo(locations.length);
 
   if (!aisMessageBuffer.includes(message.mmsi))
     aisMessageBuffer.push(message.mmsi);

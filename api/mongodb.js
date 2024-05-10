@@ -33,10 +33,10 @@ async function getAISShips() {
     .collection("realtime")
     .find(
       {
-        $and: [
-          { lat: { $exists: true, $ne: null, $ne: 0 } }, // lat exists and is not null nor zero
-          { lon: { $exists: true, $ne: null, $ne: 0 } }, // lon exists and is not null nor zero
-        ],
+        // $and: [
+        //   { lat: { $exists: true, $ne: null, $ne: 0 } }, // lat exists and is not null nor zero
+        //   { lon: { $exists: true, $ne: null, $ne: 0 } }, // lon exists and is not null nor zero
+        // ],
       },
       {
         projection: {
@@ -68,14 +68,14 @@ async function getAISShips() {
 // Search for ships
 async function searchAISShips(page, itemsPerPage, searchText) {
   let filter = {
-    $and: [
-      { lat: { $exists: true, $ne: null, $ne: 0 } }, // lat exists and is not null nor zero
-      { lon: { $exists: true, $ne: null, $ne: 0 } }, // lon exists and is not null nor zero
-    ],
+    // $and: [
+    //   { lat: { $exists: true, $ne: null, $ne: 0 } }, // lat exists and is not null nor zero
+    //   { lon: { $exists: true, $ne: null, $ne: 0 } }, // lon exists and is not null nor zero
+    // ],
   };
 
   if (searchText) {
-    filter.$or = [{ mmsi: { $regex: searchText, $options: "i" } }, { shipname: { $regex: searchText, $options: "i" } }, { imo: { $regex: searchText, $options: "i" } }, { cargo: { $regex: searchText, $options: "i" } }];
+    filter.$or = [{ mmsi: { $regex: searchText, $options: "i" } }, { shipname: { $regex: searchText, $options: "i" } }, { imo: { $regex: searchText, $options: "i" } }];
   }
 
   let ships = await mongoClient

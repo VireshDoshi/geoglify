@@ -1,6 +1,5 @@
 // Import necessary modules and libraries
 import configs from "@/helpers/configs";
-import * as turf from "@turf/turf";
 
 export const state = () => ({
   list: [],
