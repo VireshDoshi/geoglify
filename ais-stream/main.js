@@ -238,10 +238,6 @@ function decodeStreamMessage(message) {
     : null;
 
   ship.eta = eta;
-  ship.is_trawler = ship.cargo == 30 ? 1 : 0
-  // logSuccess("mmsi: \x1b[32m" + ship.immsi + "-----[" + message.MetaData.longitude + "," +  message.MetaData.latitude + "]\n\x1b[0m");
-
-
   return ship;
 }
 
