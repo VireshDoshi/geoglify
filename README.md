@@ -76,10 +76,43 @@ To generate new cable data. use the Python script as follows
    $ docker compose build --no-cache
    ```
 
-## App development with a working backend 
+## Local app development with a working backend 
 Follow these steps to do some local app development while keeping the backend services up and running
 1. Start up the Demo by following the steps above
-2. 
+2. Now stop just the app docker container
+    ```bash
+    $ docker compose stop app
+    ```
+3. Goto this file `app/nuxt.config.ts` and change the entry from `host.docker.internal` to `localhost`
+4. go into the app folder and run
+    ```bash
+    $ brew install node
+    $ npm install
+    $ npm run dev
+    ```
+5. Check `http://localhost:3000` to see that the app is running. 
+6. Now app code changes can be seen without needing to rebuild the docker images.
+
+## Connect to the running mongodb to run queries using CLI
+Mongodb is where we store the realtime vessel data which is presented on the app frontend via the api. We use `mongosh`
+1. find out the mongodb containerid and jump into it
+    ```bash
+    $ docker ps
+    $ docker exec -it 40613f20cf21 bash
+    ```
+2. lets now connect to the database cli
+    ```bash
+    mongosh "mongodb://root:root@127.0.0.1:27778/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.5"
+    ```
+## mongo useful cli commands
+   ```bash
+    show databases
+    use geoglify
+    db.realtime.find()
+    db.realtime.find({'cargo': 30})
+    db.realtime.find({'mmsi': '209351000'})
+    db.realtime.countDocuments({'cargo': 30})
+   ```
 
 ## License
 
