@@ -3,3 +3,5 @@
 /realtime/node_modules
 /bot/node_modules
 /mongodb-seed
+cables/*.geojson
+map-data-478.js

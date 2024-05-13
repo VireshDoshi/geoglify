@@ -186,7 +186,7 @@ function processAisMessage(message) {
     aisCoordsDB.set(message.mmsi, [message.lon, message.lat])
   }
   locations = aisCoordsDB.get(message.mmsi);
-  logInfo(locations);
+  logInfo(locations.length);
 
   if (!aisMessageBuffer.includes(message.mmsi))
     aisMessageBuffer.push(message.mmsi);
@@ -238,10 +238,6 @@ function decodeStreamMessage(message) {
     : null;
 
   ship.eta = eta;
-  ship.is_trawler = ship.cargo == 30 ? 1 : 0
-  // logSuccess("mmsi: \x1b[32m" + ship.immsi + "-----[" + message.MetaData.longitude + "," +  message.MetaData.latitude + "]\n\x1b[0m");
-
-
   return ship;
 }
 
