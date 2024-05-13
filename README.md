@@ -8,7 +8,7 @@ This is a POC to show how realtime streaming AIS ( vessel data) can be mapped. I
 
 ## how does this differ from the original?
 
-I have stripped out all the elements that deem either ot not work or not needed. E.g the Terrestrial strem `ais_decoder` isn't needed. Nor was the extra components around `llama` which appears to be work in progress. 
+I have stripped out all the parts that I deem either do not work or not needed. E.g the Terrestrial strem `ais_decoder` isn't needed. Nor was the extra components around `llama` which appears to be work in progress. 
 
 ## What is interesting about this demo:
 1. The monogodb just holds a limited amount of realtime data for unique vessels. This is good because, you will never run out of disk space!
