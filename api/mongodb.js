@@ -56,7 +56,8 @@ async function getAISShips() {
           length: 1,
           width: 1,
           destination: 1,
-          is_trawler: 1,
+          coordcount: 1,
+          coords: 1,
         },
       }
     )
@@ -99,7 +100,8 @@ async function searchAISShips(page, itemsPerPage, searchText) {
         length: 1,
         width: 1,
         destination: 1,
-        is_trawler: 1,
+        coordcount: 1,
+        coords: 1,
       },
     })
     .skip((page - 1) * itemsPerPage)
@@ -141,12 +143,12 @@ async function getAISShip(shipId) {
           lat: 1,
           lon: 1,
           destination: 1,
-          is_trawler: 1,
+          coordcount: 1,
+          coords: 1,
         },
       }
     );
 }
-
 
 // Get the list of layers
 async function getLayers() {
@@ -262,6 +264,7 @@ async function deleteWmsLayer(layerId) {
     .deleteOne({ _id: new ObjectId(layerId) });
   return result.deletedCount;
 }
+
 
 module.exports = {
   connectToMongoDBWithRetry,

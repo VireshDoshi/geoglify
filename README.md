@@ -112,6 +112,7 @@ Mongodb is where we store the realtime vessel data which is presented on the app
     db.realtime.find({'cargo': 30})
     db.realtime.find({'mmsi': '209351000'})
     db.realtime.countDocuments({'cargo': 30})
+    db.realtime.deleteMany({});
    ```
 
 ## License

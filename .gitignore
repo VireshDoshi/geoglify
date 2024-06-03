@@ -5,3 +5,6 @@
 /mongodb-seed
 cables/*.geojson
 map-data-478.js
+.venv-*
+.env-*
+.vscode

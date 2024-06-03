@@ -1,7 +1,7 @@
 const express = require("express");
 const http = require("http");
 const cors = require("cors");
-const { getAISShips, getAISShip, searchAISShips, getLayers, insertLayer, getLayerById, updateLayer, deleteLayer, getFeaturesByLayerId, insertFeature, updateLayerStyle, getWmsLayers, insertWmsLayer, getWmsLayerById, updateWmsLayer, deleteWmsLayer } = require("./mongodb");
+const { getAISShips, getAISShip, searchAISShips, getLayers, insertLayer, getLayerById, updateLayer, deleteLayer, getFeaturesByLayerId, insertFeature, updateLayerStyle, getWmsLayers, insertWmsLayer, getWmsLayerById, updateWmsLayer, deleteWmsLayer, getAISCoords } = require("./mongodb");
 
 const app = express();
 const server = http.createServer(app);
@@ -160,6 +160,12 @@ app.delete("/wmslayers/:id", async (req, res) => {
   const layerId = req.params.id;
   const result = await deleteWmsLayer(layerId);
   res.json(result);
+});
+
+app.get("/coords/:mmsi", async (req, res) => {
+  const mmsi = req.params.mmsi;
+  const ais_ship_coords = await getAISCoords(mmsi);
+  res.json(ais_ship_coords);
 });
 
 module.exports = { app, server };

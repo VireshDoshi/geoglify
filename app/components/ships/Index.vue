@@ -13,7 +13,17 @@
   import { CollisionFilterExtension } from "@deck.gl/extensions";
   import { MapboxOverlay } from "@deck.gl/mapbox";
 
-  const ZOOM_AIS_THRESHOLD = 14;
+  const ZOOM_AIS_THRESHOLD = 10;
+
+  const shipjson = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"LineString","coordinates":[[1.9192166666666668,51.37719666666667],[1.9188,51.37689666666667],[1.9167666666666667,51.375416666666666],[1.9143333333333332,51.373666666666665],[1.9114666666666666,51.37159],[1.9090333333333334,51.36983333333333],[1.9067666666666667,51.36801],[1.9049666666666667,51.36643],[1.9049666666666667,51.36643],[1.9045999999999998,51.36613],[1.9024500000000002,51.36416666666666],[1.9003333333333332,51.36225666666667],[1.8979166666666667,51.36005],[1.895815,51.35814666666667],[1.89375,51.35623333333333],[1.8920333333333335,51.35463],[1.8920333333333335,51.35463],[1.8916333333333335,51.35428],[1.88955,51.35236666666666],[1.8871833333333332,51.35016333333333],[1.8851483333333334,51.34825],[1.8830983333333333,51.34629666666667],[1.8810833333333332,51.344370000000005],[1.88015,51.34346666666667],[1.88015,51.34346666666667]]}}]};
+
+  // create a new blob from geojson featurecollection
+  const blob = new Blob([JSON.stringify(shipjson)], {
+    type: "application/json"
+  });
+  // URL reference to the blob
+  const url = URL.createObjectURL(blob);
+  // create new geojson layer using the blob url
 
   export default {
     props: ["map"],
@@ -233,6 +243,7 @@
             pickable: true,
             onClick: ({ object }) => this.$store.dispatch("ships/SET_SELECTED", object),
           });
+
 
           // Update the layers in the overlay
           this.overlay.setProps({

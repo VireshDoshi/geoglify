@@ -52,6 +52,8 @@ export const actions = {
       // Process the ship data and add country code
       results.items = results.items.map((ship) => {
         ship.countrycode = configs.getCountryCode(ship.mmsi);
+        // return new Promise(async (resolve) => {
+        //   const coord_results =  await $fetch("/api/coords/" + ship?.mmsi);
         return ship;
       });
 
@@ -60,6 +62,7 @@ export const actions = {
     });
   },
 };
+
 
 export const mutations = {
   // Action to set the selected ship
@@ -100,7 +103,7 @@ export const mutations = {
 function processShipData(ship) {
 
   // Extract the necessary data from the ship object
-  const { hdg, cargo, mmsi } = ship;
+  const { hdg, cargo, mmsi, coords } = ship;
 
   // Check if the heading is valid
   const isHeadingValid = !!(hdg && hdg !== 511);

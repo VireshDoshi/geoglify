@@ -119,7 +119,6 @@ async function startApplication() {
         length: ship.length,
         width: ship.width,
         destination: ship.destination,
-        is_trawler: ship.is_trawler,
       };
 
       messages.set(message.mmsi, message);

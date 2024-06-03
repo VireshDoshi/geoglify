@@ -148,6 +148,8 @@ export default {
       // Check if the ship is valid
       let originalCoords = ship.location.coordinates;
       let hdg = ship?.hdg;
+      // try and draw a linestring based on historicial coordinates
+      let lineCoords = ship?.coords;
 
       let geojson;
 
@@ -213,7 +215,19 @@ export default {
 
         // Create a GeoJSON polygon with the four rotated points
         geojson = turf.polygon([[rotatePointAC, rotatePointE, rotatePointAD, rotatePointBD, rotatePointBC, rotatePointAC], antenna.geometry.coordinates[0]]);
+        if (lineCoords !== undefined) {
+          console.log("do i ever get called?")
+          geojson = turf.lineString(lineCoords);
+        } else {
+          console.log(ship.mmsi)
+          console.log(lineCoords)
+        };
+
       }
+
+      // draw a line based on historical coords
+      // console.log(lineCoords);
+      // geojson = turf.lineString([ [ 2.5471383333333337, 51.33547333333333 ], [ 2.5473500000000002, 51.33549 ], [ 2.5476716666666666, 51.3355 ], [ 2.54773, 51.33549333333334 ], [ 2.54788, 51.33548333333333 ], [ 2.54802, 51.33551 ], [ 2.5482316666666667, 51.335545 ], [ 2.5482316666666667, 51.335545 ], [ 2.5483866666666666, 51.33557333333333 ], [ 2.548585, 51.33560833333333 ], [ 2.5487416666666665, 51.33566666666666 ], [ 2.548976666666667, 51.335746666666665 ], [ 2.548976666666667, 51.335746666666665 ], [ 2.5497366666666665, 51.336375 ], [ 2.5498483333333337, 51.33659333333333 ], [ 2.5498483333333337, 51.33659333333333 ], [ 2.5498133333333333, 51.337406666666666 ], [ 2.5498166666666666, 51.337485 ], [ 2.54985, 51.337581666666665 ], [ 2.5499050000000003, 51.337685 ], [ 2.5498366666666663, 51.33795833333333 ], [ 2.5497099999999997, 51.33802166666667 ], [ 2.5497099999999997, 51.33802166666667 ] ]);
 
       // Add properties to the GeoJSON
       geojson.properties = {

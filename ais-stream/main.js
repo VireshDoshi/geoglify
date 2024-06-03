@@ -15,7 +15,8 @@ const AIS_SERVER_HOST = process.env.AIS_SERVER_HOST || "aisstream.io"
 const mongoClient = new MongoClient(MONGODB_CONNECTION_STRING);
 
 // Variables to store AIS messages and ships list
-let aisMessageBuffer = [];
+let 
+ = [];
 let aisMessageDB = new Map();
 // aim to store all coords per mmsi
 let aisCoordsDB = new Map();

@@ -1,16 +1,16 @@
 services:
-  app:
-    container_name: app
-    restart: always
-    build: ./app
-    working_dir: /opt/app
-    environment:
-      - NODE_ENV=production
-    ports:
-      - "3000:3000"
-    depends_on:
-      - realtime
-      - api
+  # app:
+  #   container_name: app
+  #   restart: always
+  #   build: ./app
+  #   working_dir: /opt/app
+  #   environment:
+  #     - NODE_ENV=production
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - realtime
+  #     - api
   mongodb:
     container_name: mongodb
     restart: always
@@ -23,19 +23,19 @@ services:
       - mongodb_data:/data/db
     ports:
       - 27778:27778
-  ais-stream:
-    build: ./ais-stream
-    restart: always
-    container_name: ais-stream
-    working_dir: /opt/ais-stream
-    environment:
-      - NODE_ENV=production
-      - MONGODB_CONNECTION_STRING=mongodb://root:root@mongodb:27778/?directConnection=true&authMechanism=DEFAULT
-      - AISSTREAM_API_KEY=f36779b711561eabb581a50bc7db94722b60bbbf
-      - AIS_SERVER_HOST=aisstream.io
-    command: "node main.js"
-    depends_on:
-      - mongodb
+  # ais-stream:
+  #   build: ./ais-stream
+  #   restart: always
+  #   container_name: ais-stream
+  #   working_dir: /opt/ais-stream
+  #   environment:
+  #     - NODE_ENV=production
+  #     - MONGODB_CONNECTION_STRING=mongodb://root:root@mongodb:27778/?directConnection=true&authMechanism=DEFAULT
+  #     - AISSTREAM_API_KEY=f36779b711561eabb581a50bc7db94722b60bbbf
+  #     - AIS_SERVER_HOST=aisstream.io
+  #   command: "node main.js"
+  #   depends_on:
+  #     - mongodb
   realtime:
     build: ./realtime
     restart: always
@@ -49,18 +49,18 @@ services:
     command: "node main.js"
     depends_on:
       - mongodb
-  api:
-    build: ./api
-    restart: always
-    container_name: api
-    working_dir: /opt/api
-    ports:
-      - "8081:8081"
-    environment:
-      - NODE_ENV=production
-      - MONGODB_CONNECTION_STRING=mongodb://root:root@mongodb:27778/?directConnection=true&authMechanism=DEFAULT
-    command: "node main.js"
-    depends_on:
-      - mongodb
+  # api:
+  #   build: ./api
+  #   restart: always
+  #   container_name: api
+  #   working_dir: /opt/api
+  #   ports:
+  #     - "8081:8081"
+  #   environment:
+  #     - NODE_ENV=production
+  #     - MONGODB_CONNECTION_STRING=mongodb://root:root@mongodb:27778/?directConnection=true&authMechanism=DEFAULT
+  #   command: "node main.js"
+  #   depends_on:
+  #     - mongodb
 volumes:
   mongodb_data:
